@@ -1,0 +1,64 @@
+{% extends "homepage/base.html" %}
+{% load static %}
+
+{% block title %}커뮤니티{% endblock %}
+
+{% block content %}
+
+<!-- 배너 / 슬라이더 -->
+<div id="customBannerCarousel" class="carousel slide mb-4" data-ride="carousel" data-interval="4000">
+    <div class="carousel-inner rounded shadow-sm">
+
+    {% for banner in banners %}
+    <div class="carousel-item {% if forloop.first %}active{% endif %}">
+        <a href="{{ banner.url }}" class="text-decoration-none">
+            <div class="bg-light rounded p-4 text-center position-relative" style="height: 250px;">
+                <div class="position-absolute" style="top: 10px; left: 10px; font-size: 0.8rem;">
+                    {{ forloop.counter }}/{{ banners|length }}
+                </div>
+                <img src="{{ banner.image }}" alt="배너 이미지" class="img-fluid h-100">
+            </div>
+        </a>
+    </div>
+    {% endfor %}
+
+    </div>
+
+    <a class="carousel-control-prev" href="#customBannerCarousel" role="button" data-slide="prev">
+        <span class="carousel-control-prev-icon bg-dark rounded-circle" aria-hidden="true"></span>
+    </a>
+    <a class="carousel-control-next" href="#customBannerCarousel" role="button" data-slide="next">
+        <span class="carousel-control-next-icon bg-dark rounded-circle" aria-hidden="true"></span>
+    </a>
+</div>
+
+<!-- 카테고리 탭 -->
+<ul class="nav nav-pills justify-content-around mb-3 border-bottom pb-2">
+    <li class="nav-item"><a class="nav-link active" href="#">전체</a></li>
+    <li class="nav-item"><a class="nav-link" href="#">베스트</a></li>
+</ul>
+
+<ul class="nav nav-tabs justify-content-around bg-white mb-3">
+    <li class="nav-item"><a class="nav-link active" href="#">모든 주제</a></li>
+    <li class="nav-item"><a class="nav-link" href="#">공지</a></li>
+    <li class="nav-item"><a class="nav-link" href="#">리뷰</a></li>
+    <li class="nav-item"><a class="nav-link" href="#">레시피</a></li>
+    <li class="nav-item"><a class="nav-link" href="#">자유 게시판</a></li>
+</ul>
+
+<!-- 게시물 목록 -->
+<div class="list-group">
+    {% for post in posts %}
+        <a href="#" class="list-group-item list-group-item-action">
+            <div class="d-flex justify-content-between">
+            <strong>{{ post.title }}</strong>
+            <small class="text-muted">{{ post.created_at|timesince }} 전</small>
+            </div>
+            <div class="text-muted small">
+            {{ post.author }} · 👁 {{ post.views }}
+            </div>
+        </a>
+    {% endfor %}
+</div>
+
+{% endblock %}

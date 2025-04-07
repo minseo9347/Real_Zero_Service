@@ -1,0 +1,70 @@
+{% extends "homepage/base.html" %}
+{% load static %}
+
+{% block title %}검색결과{% endblock %}
+
+{% block navbar %}
+<!-- 커스텀 네비게이션 바 -->
+<nav class="d-flex justify-content-between align-items-center px-3 py-2 border-bottom bg-white">
+  <div class="d-flex align-items-center">
+    <a href="{% url 'index' %}" class="d-flex align-items-center text-dark text-decoration-none">
+      <img src="{% static 'homepage/img/로고.jpg' %}" alt="로고" width="32" height="32" class="rounded-circle mr-2">
+      <strong>Real Zero</strong>
+    </a>
+  </div>
+  <div class="nav nav-tabs border-0">
+    <a class="nav-link" href="{% url 'ranking' %}">랭킹</a>
+    <a class="nav-link" href="{% url 'community' %}">커뮤니티</a>
+  </div>
+  <div class="d-flex">
+    <a href="#" class="text-muted mr-2">로그인</a>
+    <a href="#" class="text-muted">회원가입</a>
+  </div>
+</nav>
+{% endblock %}
+
+{% block searchbar %}
+<form action="{% url 'search' %}" method="get" class="p-3 border-bottom bg-white">
+  <div class="input-group rounded-pill shadow-sm">
+    <input type="text" name="q" class="form-control border-0" placeholder="궁금한 제품을 검색해 보세요" value="{{ query }}">
+    <div class="input-group-append">
+      <button type="submit" class="btn btn-danger rounded-pill px-4" style="margin-left: 10px;">검색</button>
+    </div>
+  </div>
+</form>
+{% endblock %}
+
+{% block tabmenu %}
+<!-- 탭 숨김 -->
+{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3 px-3 pt-3">
+  <div>제품 개수&nbsp;&nbsp;<strong>{{ count }}개</strong></div>
+  <form method="get" class="form-inline">
+    <input type="hidden" name="q" value="{{ query }}">
+    <select name="maltitol_filter" class="form-control form-control-sm ml-2" onchange="this.form.submit()">
+      <option value="">전체</option>
+      <option value="include" {% if filter_option == "include" %}selected{% endif %}>말티톨 포함</option>
+      <option value="exclude" {% if filter_option == "exclude" %}selected{% endif %}>말티톨 없음</option>
+    </select>
+  </form>
+</div>
+
+{% if results %}
+  {% for product in results %}
+  <a href="{% url 'product_detail' product.id %}" class="text-decoration-none text-dark">
+    <div class="d-flex align-items-center mb-3 border-bottom pb-2 px-3">
+      <img src="{{ product.image }}" width="60" height="60" class="mr-3 rounded" alt="제품 이미지">
+      <div>
+        <p class="font-weight-bold mb-1">{{ product.product_name }} </p>
+        <p class="text-muted mb-1">{{ product.price }} (최저가)</p>
+        <p class="mb-0">혈당 {{ product.emoji }}</p>
+      </div>
+    </div>
+  </a>
+  {% endfor %}
+{% else %}
+  <div class="text-center text-muted px-3">일치하는 제품이 없습니다.</div>
+{% endif %}
+{% endblock %}

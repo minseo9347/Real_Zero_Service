@@ -1,0 +1,130 @@
+{% extends "homepage/base.html" %}
+{% load static %}
+
+{% block title %}{{ product.product_name }}{% endblock %}
+
+{% block content %}
+<div class="container py-3">
+  <!-- 제품 이미지 및 라벨 -->
+  <div class="text-center">
+    <img src="{{ product.image }}" alt="제품 이미지" class="img-fluid mb-3 rounded" style="max-height: 250px;">
+  </div>
+
+  <!-- 브랜드명 및 제품명 -->
+  <h5 class="text-muted">{{ product.brand }}</h5>
+  <h3 class="font-weight-bold">{{ product.product_name }}</h3>
+
+  <!-- 가격 예시 -->
+  <p class="text-muted">{{ product.price }} (최저가)</p>
+
+  <!-- 라벨 예시 -->
+  <div class="mb-3">
+  {% if is_zero_calorie %}
+    <span class="badge badge-success px-3 py-2 rounded-pill">칼로리 제로</span>
+  {% endif %}
+  {% if has_maltitol %}
+    <span class="badge badge-danger px-3 py-2 rounded-pill">말티톨</span>
+  {% endif %}
+  </div>
+
+  <div class="border rounded shadow-sm bg-light p-3">
+
+    <!-- 상단: 좌우 분할 (혈당주의성분 / 경고문) -->
+    <div class="d-flex">
+      <!-- 왼쪽 박스 -->
+      <div class="pr-3 border-right flex-shrink-0" style="width: auto;">
+        <h6 class="font-weight-bold mb-2">혈당 주의 성분</h6>
+        <div class="text-danger font-weight-bold" style="font-size: 1.3rem; text-align: center;">{{ warnings_count }}개</div>
+      </div>
+  
+      <!-- 오른쪽 박스 -->
+      <div class="pl-3 flex-grow-1">
+        <div class="text-dark small">
+          {% for msg in warning_messages %}
+            {{ msg }}<br>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  
+    <!-- 아래 구분선 -->
+    <hr class="my-3">
+  
+    <!-- 하단: GI / GL 한 줄 -->
+    <div class="d-flex justify-content-start">
+      <div class="font-weight-bold mr-4">GI {{ product.GI }}</div>
+      <div class="font-weight-bold">GL {{ product.GL }}</div>
+    </div>
+  
+  </div>
+  
+
+<!-- 제품 영양 정보 -->
+<div class="bg-white p-3 mb-3 border rounded">
+    <!-- 헤더 영역 -->
+    <div class="d-flex justify-content-between align-items-start mb-2">
+      <h5 class="mb-1 font-weight-bold">제품 영양 정보</h5>
+      <div class="text-right">
+        <strong class="d-block text-dark">총 내용량 {{ product.Capacity }}</strong>
+        <small class="text-muted">1회 제공량 {{ product.Product_calorific_onetime }} {{ product.Product_calorific_value }}</small>
+      </div>
+    </div>
+  
+    <!-- 영양 성분 2열 정렬 -->
+    <div class="row mt-3">
+      <div class="col-6">
+        <div class="d-flex justify-content-between mb-2">
+          <span>탄수화물</span><span>{{ product.carbohydrates }}</span>
+        </div>
+        <div class="d-flex justify-content-between mb-2">
+          <span>당류</span><span>{{ product.sugar }}</span>
+        </div>
+        <div class="d-flex justify-content-between mb-2">
+          <span>당알코올</span><span>{{ product.Sugar_alcohol }}</span>
+        </div>
+      </div>
+      <div class="col-6">
+        <div class="d-flex justify-content-between mb-2">
+          <span>지방</span><span>{{ product.fat }}</span>
+        </div>
+        <div class="d-flex justify-content-between mb-2">
+          <span>단백질</span><span>{{ product.protein }}</span>
+        </div>
+        <div class="d-flex justify-content-between mb-2">
+          <span>나트륨</span><span>{{ product.sodium }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  
+  
+
+  <!-- 원재료 세부정보: 접을 수 있는 영역 -->
+  <section class="my-4">
+    <h5 class="font-weight-bold mb-2">원재료 세부 정보</h5>
+  
+  <button class="btn btn-outline-secondary btn-sm mb-2" type="button" data-toggle="collapse" data-target="#rawMaterialCollapse" aria-expanded="false" aria-controls="rawMaterialCollapse">
+    🔍 원재료 세부 정보 보기
+  </button>
+
+  <div class="collapse" id="rawMaterialCollapse">
+    <div class="card card-body bg-light small">
+      <ul class="pl-3 mb-0">
+        {% for material in highlighted_materials %}
+          {{ material|safe }}
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+  </section>
+
+  <!-- 리뷰 예시 (샘플) -->
+  <div class="border-top pt-3">
+    <h5 class="mb-3">리뷰</h5>
+    <p><strong>재현 (20대 / 당뇨 위험군)</strong><br> 저렴하고 맛있어요. 근데 말티톨이 있네요.</p>
+    <hr>
+    <p><strong>소희 (30대 / 건강)</strong><br> 맛은 있는데 혈당이 살짝 올라요!</p>
+  </div>
+</div>
+{% endblock %}

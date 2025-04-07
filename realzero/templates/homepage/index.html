@@ -1,0 +1,87 @@
+
+{% extends "homepage/base.html" %}
+{% load static %}
+
+{% block title %}홈{% endblock %}
+
+{% block content %}
+
+<!-- 새로 출시했어요 -->
+<section class="mb-4 position-relative">
+  <h5 class="mt-4 mb-2 font-weight-bold">새로 출시했어요!</h5>
+  <div id="newProductCarousel" class="carousel slide" data-ride="carousel" data-interval="3000">
+    <div class="carousel-inner rounded shadow-sm">
+      {% for product in new_products %}
+      <div class="carousel-item {% if forloop.first %}active{% endif %} bg-light p-3">
+        <a href="{% url 'product_detail' product.id %}" class="text-dark text-decoration-none">
+          <div class="d-flex align-items-center">
+            <img src="{{ product.image }}" width="100" height="100" class="mr-3" alt="{{ product.product_name }}">
+            <div>
+              <p class="font-weight-bold mb-1">{{ product.product_name }}</p>
+              <p class="text-muted mb-1">{{ product.price }}원 (최저가)</p>
+              <p class="mb-0">혈당 {{ product.emoji }}</p>
+            </div>
+          </div>
+        </a>
+      </div>
+      {% endfor %}
+    </div>
+    <a class="carousel-control-prev" href="#newProductCarousel" role="button" data-slide="prev">
+      <span class="carousel-control-prev-icon bg-dark rounded-circle" aria-hidden="true"></span>
+    </a>
+    <a class="carousel-control-next" href="#newProductCarousel" role="button" data-slide="next">
+      <span class="carousel-control-next-icon bg-dark rounded-circle" aria-hidden="true"></span>
+    </a>
+  </div>
+</section>
+
+<!-- 많이 찾아봤어요 -->
+<section class="mb-4 position-relative">
+  <h5 class="mt-5 mb-2 font-weight-bold">많이 찾아봤어요!</h5>
+  <div id="rankingProductCarousel" class="carousel slide" data-ride="carousel" data-interval="3000">
+    <div class="carousel-inner rounded shadow-sm">
+      {% for product in popular_products %}
+      <div class="carousel-item {% if forloop.first %}active{% endif %} bg-light p-3">
+        <a href="{% url 'product_detail' product.id %}" class="text-dark text-decoration-none">
+          <div class="d-flex align-items-center">
+            <img src="{{ product.image }}" width="100" height="100" class="mr-3" alt="{{ product.product_name }}">
+            <div>
+              <p class="font-weight-bold mb-1">{{ product.product_name }}</p>
+              <p class="text-muted mb-1">{{ product.price }}원 (최저가)</p>
+              <p class="mb-0">혈당 {{ product.emoji }}</p>
+            </div>
+          </div>
+        </a>
+      </div>
+      {% endfor %}
+    </div>
+    <a class="carousel-control-prev" href="#rankingProductCarousel" role="button" data-slide="prev">
+      <span class="carousel-control-prev-icon bg-dark rounded-circle" aria-hidden="true"></span>
+    </a>
+    <a class="carousel-control-next" href="#rankingProductCarousel" role="button" data-slide="next">
+      <span class="carousel-control-next-icon bg-dark rounded-circle" aria-hidden="true"></span>
+    </a>
+  </div>
+</section>
+
+<!-- 추천 많은 게시글 -->
+<section class="mb-4">
+  <h5 class="font-weight-bold mb-3">추천 많은 게시글</h5>
+  <div class="list-group">
+    {% for post in posts %}
+    <div class="custom-post-item mb-3">
+      <div class="d-flex justify-content-between align-items-center">
+        <div>
+          <p class="font-weight-bold mb-1">{{ post.title }}</p>
+          <small class="text-muted">{{ post.author }} · {{ post.timestamp|timesince }} 전</small>
+        </div>
+        <span class="ml-3 text-warning font-weight-bold">👍 {{ post.likes }}</span>
+      </div>
+    </div>
+    {% empty %}
+    <div class="custom-post-item text-center text-muted">게시글이 없습니다.</div>
+    {% endfor %}
+  </div>
+</section>
+
+{% endblock %}

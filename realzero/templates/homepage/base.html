@@ -1,0 +1,75 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>{% block title %}Real Zero{% endblock %}</title>
+
+  <!-- Bootstrap 4.6 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="{% static 'homepage/css/styles.css' %}">
+</head>
+<body>
+  <!-- 앱 프레임 -->
+  <div class="app-frame mx-auto">
+
+    <!-- ✅ 네비게이션 바 (필요시 덮어쓸 수 있음) -->
+    {% block navbar %}
+    <nav class="navbar navbar-light bg-white border-bottom">
+      <a class="navbar-brand d-flex align-items-center" href="{% url 'index' %}">
+        <img src="{% static 'homepage/img/로고.jpg' %}" alt="로고" width="40" height="40" class="mr-2 rounded-circle">
+        <strong>Real Zero</strong>
+      </a>
+      <div>
+        <a href="#" class="mr-3 text-muted">로그인</a>
+        <a href="#" class="text-muted">회원가입</a>
+      </div>
+    </nav>
+    {% endblock %}
+
+    <!-- ✅ 검색창 -->
+    {% block searchbar %}
+    <form action="{% url 'search' %}" method="get" class="p-3 border-bottom bg-white">
+      <div class="input-group rounded-pill shadow-sm">
+        <input type="text" name="q" class="form-control border-0" placeholder="궁금한 제품을 검색해 보세요">
+        <div class="input-group-append">
+          <button type="submit" class="btn btn-danger rounded-pill px-4" style="margin-left: 10px;">검색</button>
+        </div>
+      </div>
+    </form>
+    {% endblock %}
+
+    <!-- ✅ 탭 메뉴 -->
+    {% block tabmenu %}
+    <ul class="nav nav-tabs justify-content-around bg-white">
+      <li class="nav-item">
+        <a class="nav-link {% if request.path == '/' %}active{% endif %}" href="{% url 'index' %}">홈</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link {% if request.path == '/ranking/' %}active{% endif %}" href="{% url 'ranking' %}">랭킹</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link {% if request.path == '/community/' %}active{% endif %}" href="{% url 'community' %}">커뮤니티</a>
+      </li>
+    </ul>
+    {% endblock %}
+
+
+    <!-- ✅ 본문 영역 -->
+    <div class="p-3">
+      {% block content %}{% endblock %}
+    </div>
+    {% block footer %}
+      <footer class="text-center text-muted small py-4">
+        ⓒReal Zero<br>로그인
+      </footer>
+    {% endblock %}
+  </div>
+</body>
+</html>
